@@ -1,4 +1,3 @@
-#Requires -Version 5.1﻿
 <#
     Uygulama İndirme-Güncelleme-Sürücü Yedek Alma-Temizleme Aracı
     Hazırlayan: Mehmet IŞIK
