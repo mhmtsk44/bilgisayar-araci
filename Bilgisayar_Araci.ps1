@@ -24,13 +24,22 @@ if (-not (Test-Admin)) {
     # UTF-8 + betiği indirip çalıştıran komut (Türkçe karakterler düzgün görünsün)
     $cmd = "[Console]::OutputEncoding=[Text.Encoding]::UTF8; irm '$ScriptUrl' | iex"
 
+    # Windows Terminal'i (wt.exe) hem PATH'te hem de kurulu klasöründe ara
+    $wtYol = $null
+    $wtKomut = Get-Command wt.exe -ErrorAction SilentlyContinue
+    if ($wtKomut) {
+        $wtYol = $wtKomut.Source
+    } else {
+        $aday = Join-Path $env:LOCALAPPDATA "Microsoft\WindowsApps\wt.exe"
+        if (Test-Path $aday) { $wtYol = $aday }
+    }
+
     try {
-        # ÖNCELİK 1: Windows Terminal (wt.exe) varsa onu kullan
-        if (Get-Command wt.exe -ErrorAction SilentlyContinue) {
-            Start-Process wt.exe -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
-        }
-        # ÖNCELİK 2: Terminal yoksa klasik PowerShell
-        else {
+        if ($wtYol) {
+            # ÖNCELİK 1: Windows Terminal
+            Start-Process $wtYol -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
+        } else {
+            # ÖNCELİK 2: Terminal yoksa klasik PowerShell
             Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
         }
     } catch {
