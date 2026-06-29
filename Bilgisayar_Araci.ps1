@@ -16,7 +16,7 @@ function Test-Admin {
 }
 
 # irm | iex ile çalışacak şekilde betiğin indirileceği adres
-$ScriptUrl = "https://raw.githubusercontent.com/KULLANICI_ADIN/bilgisayar-araci/main/Bilgisayar_Araci.ps1"
+$ScriptUrl = "https://raw.githubusercontent.com/mhmtsk44/bilgisayar-araci/refs/heads/main/Bilgisayar_Araci.ps1"
 
 if (-not (Test-Admin)) {
     Write-Host "Yönetici izniyle yeniden başlatılıyor..." -ForegroundColor Yellow
