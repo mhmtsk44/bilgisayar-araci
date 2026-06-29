@@ -3,7 +3,7 @@
 > **Kur • Güncelle • Temizle • Yedekle • Onar**
 > Windows için hepsi bir arada bakım ve kurulum aracı.
 
-Hazırlayan: **Mehmet IŞIK**
+**Hazırlayan:** Mehmet IŞIK
 
 ---
 
@@ -11,8 +11,11 @@ Hazırlayan: **Mehmet IŞIK**
 
 PowerShell'i açın ve aşağıdaki komutu yapıştırın:
 
-```powershell
-irm https://tinyurl.com/27kxfp7y | iex
+    irm https://tinyurl.com/27kxfp7y | iex
+
+Program otomatik olarak yönetici izni ister, Windows Terminal'de açılır (yoksa kurar) ve menüyü başlatır.
+
+---
 
 ## ✨ Özellikler
 
@@ -55,3 +58,32 @@ irm https://tinyurl.com/27kxfp7y | iex
 - PowerShell 5.1 veya üzeri
 - Yönetici hakları (program otomatik ister)
 - İnternet bağlantısı (uygulama kurulumu için)
+
+---
+
+## ⚙️ Kurulum Yöntemleri
+
+| Yöntem | Komut |
+|--------|-------|
+| **PowerShell** | `irm https://tinyurl.com/27kxfp7y \| iex` |
+| **CMD** | `powershell -ExecutionPolicy Bypass -Command "irm 'https://tinyurl.com/27kxfp7y' \| iex"` |
+
+---
+
+## ⚠️ Uyarı
+
+Bu araç sistem dosyaları ve sürücülerle çalışır. Önemli işlemlerden önce **geri yükleme noktası oluşturmanız** önerilir (menüde mevcut).
+
+---
+
+## 👤 Hazırlayan
+
+**Mehmet IŞIK**
+
+Bilgisayar Aracı • v2026
+
+---
+
+## 📄 Lisans
+
+Bu proje kişisel kullanım için hazırlanmıştır.
