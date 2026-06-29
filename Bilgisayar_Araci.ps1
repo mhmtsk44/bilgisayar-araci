@@ -20,28 +20,9 @@ $ScriptUrl = "https://raw.githubusercontent.com/mhmtsk44/bilgisayar-araci/refs/h
 
 if (-not (Test-Admin)) {
     Write-Host "Yönetici izniyle yeniden başlatılıyor..." -ForegroundColor Yellow
-
-    # UTF-8 + betiği indirip çalıştıran komut (Türkçe karakterler düzgün görünsün)
     $cmd = "[Console]::OutputEncoding=[Text.Encoding]::UTF8; irm '$ScriptUrl' | iex"
-
-    # Windows Terminal'i (wt.exe) hem PATH'te hem de kurulu klasöründe ara
-    $wtYol = $null
-    $wtKomut = Get-Command wt.exe -ErrorAction SilentlyContinue
-    if ($wtKomut) {
-        $wtYol = $wtKomut.Source
-    } else {
-        $aday = Join-Path $env:LOCALAPPDATA "Microsoft\WindowsApps\wt.exe"
-        if (Test-Path $aday) { $wtYol = $aday }
-    }
-
     try {
-        if ($wtYol) {
-            # ÖNCELİK 1: Windows Terminal
-            Start-Process $wtYol -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
-        } else {
-            # ÖNCELİK 2: Terminal yoksa klasik PowerShell
-            Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
-        }
+        Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
     } catch {
         Write-Host "Yönetici izni verilmedi. Program kapanıyor." -ForegroundColor Red
         Read-Host "Kapatmak için Enter'a basın"
@@ -49,6 +30,15 @@ if (-not (Test-Admin)) {
     exit
 }
 
+# >>> YENİ: Yöneticiyiz ama Terminal'de değilsek, kendimizi Terminal içinde yeniden aç
+if (-not $env:WT_SESSION) {
+    $wtKomut = Get-Command wt.exe -ErrorAction SilentlyContinue
+    if ($wtKomut) {
+        $cmd2 = "[Console]::OutputEncoding=[Text.Encoding]::UTF8; irm '$ScriptUrl' | iex"
+        Start-Process $wtKomut.Source -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd2`""
+        exit
+    }
+}
 # ===================== TEMEL AYARLAR =====================
 $ErrorActionPreference = "Continue"
 $Host.UI.RawUI.WindowTitle = "Bilgisayar Aracı - Mehmet IŞIK"
