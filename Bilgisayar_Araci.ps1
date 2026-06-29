@@ -20,9 +20,19 @@ $ScriptUrl = "https://raw.githubusercontent.com/mhmtsk44/bilgisayar-araci/refs/h
 
 if (-not (Test-Admin)) {
     Write-Host "Yönetici izniyle yeniden başlatılıyor..." -ForegroundColor Yellow
-    $cmd = "irm '$ScriptUrl' | iex"
+
+    # UTF-8 + betiği indirip çalıştıran komut (Türkçe karakterler düzgün görünsün)
+    $cmd = "[Console]::OutputEncoding=[Text.Encoding]::UTF8; irm '$ScriptUrl' | iex"
+
     try {
-        Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
+        # ÖNCELİK 1: Windows Terminal (wt.exe) varsa onu kullan
+        if (Get-Command wt.exe -ErrorAction SilentlyContinue) {
+            Start-Process wt.exe -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
+        }
+        # ÖNCELİK 2: Terminal yoksa klasik PowerShell
+        else {
+            Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
+        }
     } catch {
         Write-Host "Yönetici izni verilmedi. Program kapanıyor." -ForegroundColor Red
         Read-Host "Kapatmak için Enter'a basın"
