@@ -15,12 +15,13 @@ function Test-Admin {
     return $rol.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 }
 
-# irm | iex ile çalışacak şekilde betiğin indirileceği adres
+# Betiğin indirileceği adres
 $ScriptUrl = "https://raw.githubusercontent.com/mhmtsk44/bilgisayar-araci/refs/heads/main/Bilgisayar_Araci.ps1"
 
+# AŞAMA 1: Yönetici değilsek -> sade powershell'i yönetici yap
 if (-not (Test-Admin)) {
     Write-Host "Yönetici izniyle yeniden başlatılıyor..." -ForegroundColor Yellow
-    $cmd = "[Console]::OutputEncoding=[Text.Encoding]::UTF8; irm '$ScriptUrl' | iex"
+    $cmd = "irm '$ScriptUrl' | iex"
     try {
         Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
     } catch {
@@ -30,15 +31,22 @@ if (-not (Test-Admin)) {
     exit
 }
 
-# >>> YENİ: Yöneticiyiz ama Terminal'de değilsek, kendimizi Terminal içinde yeniden aç
+# AŞAMA 2: Artık yöneticiyiz. Eğer Terminal içinde DEĞİLSEK -> wt.exe içinde yeniden aç (RunAs YOK!)
 if (-not $env:WT_SESSION) {
-    $wtKomut = Get-Command wt.exe -ErrorAction SilentlyContinue
-    if ($wtKomut) {
-        $cmd2 = "[Console]::OutputEncoding=[Text.Encoding]::UTF8; irm '$ScriptUrl' | iex"
-        Start-Process $wtKomut.Source -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd2`""
-        exit
+    $wt = Get-Command wt.exe -ErrorAction SilentlyContinue
+    if ($wt) {
+        $cmd = "irm '$ScriptUrl' | iex"
+        try {
+            # DİKKAT: -Verb RunAs YOK. Zaten yöneticiyiz.
+            Start-Process wt.exe -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd`""
+            exit
+        } catch {
+            # wt.exe açılamazsa sessizce devam et (sade powershell'de kalırız)
+        }
     }
 }
+
+# Buraya geldiysek: Ya Terminal içindeyiz ya da wt.exe yok -> program normal devam eder
 # ===================== TEMEL AYARLAR =====================
 $ErrorActionPreference = "Continue"
 $Host.UI.RawUI.WindowTitle = "Bilgisayar Aracı - Mehmet IŞIK"
