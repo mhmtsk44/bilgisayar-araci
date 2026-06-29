@@ -31,22 +31,47 @@ if (-not (Test-Admin)) {
     exit
 }
 
-# AŞAMA 2: Artık yöneticiyiz. Eğer Terminal içinde DEĞİLSEK -> wt.exe içinde yeniden aç (RunAs YOK!)
+# AŞAMA 2: Artık yöneticiyiz. Terminal içinde DEĞİLSEK -> wt.exe içinde aç (gerekirse kur)
 if (-not $env:WT_SESSION) {
     $wt = Get-Command wt.exe -ErrorAction SilentlyContinue
+
+    # wt.exe yoksa winget ile kurmayı dene
+    if (-not $wt) {
+        $winget = Get-Command winget.exe -ErrorAction SilentlyContinue
+        if ($winget) {
+            Write-Host "Windows Terminal bulunamadi. Kuruluyor..." -ForegroundColor Yellow
+            try {
+                winget install --id Microsoft.WindowsTerminal -e --accept-source-agreements --accept-package-agreements --silent
+                Write-Host "Windows Terminal kuruldu." -ForegroundColor Green
+            } catch {
+                Write-Host "Windows Terminal kurulamadi, sade PowerShell ile devam ediliyor." -ForegroundColor Red
+            }
+            # Kurulumdan sonra wt.exe yolunu tekrar ara
+            Start-Sleep -Seconds 2
+            $wt = Get-Command wt.exe -ErrorAction SilentlyContinue
+            if (-not $wt) {
+                # PATH henuz guncellenmemis olabilir, dogrudan yolu dene
+                $wtPath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
+                if (Test-Path $wtPath) { $wt = $wtPath }
+            }
+        } else {
+            Write-Host "winget bulunamadi, Windows Terminal otomatik kurulamiyor." -ForegroundColor Red
+        }
+    }
+
+    # wt.exe varsa (veya yeni kurulduysa) Terminal icinde ac
     if ($wt) {
         $cmd = "irm '$ScriptUrl' | iex"
         try {
-            # DİKKAT: -Verb RunAs YOK. Zaten yöneticiyiz.
             Start-Process wt.exe -ArgumentList "powershell -NoExit -ExecutionPolicy Bypass -Command `"$cmd`""
             exit
         } catch {
-            # wt.exe açılamazsa sessizce devam et (sade powershell'de kalırız)
+            # wt.exe acilamazsa sessizce devam et
         }
     }
 }
 
-# Buraya geldiysek: Ya Terminal içindeyiz ya da wt.exe yok -> program normal devam eder
+# Buraya geldiysek: Ya Terminal icindeyiz, ya wt yok/kurulamadi -> program normal devam eder
 # ===================== TEMEL AYARLAR =====================
 $ErrorActionPreference = "Continue"
 $Host.UI.RawUI.WindowTitle = "Bilgisayar Aracı - Mehmet IŞIK"
