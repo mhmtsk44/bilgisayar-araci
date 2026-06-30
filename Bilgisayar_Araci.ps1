@@ -57,14 +57,22 @@ function Get-BaslatmaKomutu {
     }
 }
 
-# AŞAMA 1: Yönetici değilsek -> sade powershell'i yönetici yap
+# AŞAMA 1: Yönetici değilsek -> yönetici olarak yeniden başlat
 if (-not (Test-Admin)) {
     Write-Host "Yönetici izniyle yeniden başlatılıyor..." -ForegroundColor Yellow
-    $cmd = "irm '$ScriptUrl' | iex"
+    $bk = Get-BaslatmaKomutu
     try {
-        Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$cmd`"" -Verb RunAs
+        if ($bk.Tip -eq "Dosya") {
+            Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$($bk.Deger)`"" -Verb RunAs -ErrorAction Stop
+        } else {
+            # UZAKTAN (irm|iex) MODU: -NoExit ekledik ki hata olursa pencere kapanmasın
+            Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$($bk.Deger)`"" -Verb RunAs -ErrorAction Stop
+        }
     } catch {
-        Write-Host "Yönetici izni verilmedi. Program kapanıyor." -ForegroundColor Red
+        Write-Host ""
+        Write-Host "HATA: Yönetici izni verilmedi veya yükseltme başarısız oldu." -ForegroundColor Red
+        Write-Host "Ayrıntı: $($_.Exception.Message)" -ForegroundColor DarkYellow
+        Write-Host ""
         Read-Host "Kapatmak için Enter'a basın"
     }
     exit
