@@ -1,4 +1,18 @@
-﻿<#
+# ===================== GLOBAL HATA YAKALAYICI (en başa) =====================
+$ErrorActionPreference = "Continue"
+$GlobalLog = "$env:USERPROFILE\Desktop\BA_HATA_LOG.txt"
+trap {
+    "=== YAKALANAN HATA: $(Get-Date) ===" | Out-File $GlobalLog -Append -Encoding UTF8
+    "Mesaj : $($_.Exception.Message)"      | Out-File $GlobalLog -Append -Encoding UTF8
+    "Satır : $($_.InvocationInfo.ScriptLineNumber)" | Out-File $GlobalLog -Append -Encoding UTF8
+    "Komut : $($_.InvocationInfo.Line.Trim())"      | Out-File $GlobalLog -Append -Encoding UTF8
+    "Tam   : $($_ | Out-String)"           | Out-File $GlobalLog -Append -Encoding UTF8
+    "" | Out-File $GlobalLog -Append -Encoding UTF8
+    Write-Host "HATA yakalandı, masaüstüne kaydedildi: $GlobalLog" -ForegroundColor Red
+    Start-Sleep -Seconds 1
+    continue
+}
+ <#
     Uygulama İndirme-Güncelleme-Sürücü Yedek Alma-Temizleme Aracı
     Hazırlayan: Mehmet IŞIK
     Güncelleme: 29.06.2026
