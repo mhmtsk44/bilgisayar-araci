@@ -79,7 +79,7 @@ if (-not (Test-Admin)) {
         if ($bk.Tip -eq "Dosya") {
             Start-Process powershell -ArgumentList "-ExecutionPolicy Bypass -File `"$($bk.Deger)`"" -Verb RunAs -ErrorAction Stop
         } else {
-            # UZAKTAN (irm|iex) MODU: -NoExit ekledik ki hata olursa pencere kapanmasın
+            # UZAKTAN (irm|iex) MOD: -NoExit eklendi ki hata olsa da pencere kapanmasın
             Start-Process powershell -ArgumentList "-NoExit -ExecutionPolicy Bypass -Command `"$($bk.Deger)`"" -Verb RunAs -ErrorAction Stop
         }
     } catch {
