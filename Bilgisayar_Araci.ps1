@@ -10,6 +10,7 @@
 # Betik diskte bir dosya olarak DEĞİL de (irm|iex ile) bellekte çalıştırıldıysa,
 # $PSCommandPath ve $MyInvocation.MyCommand.Path BOŞ olur.
 # Bu durumda betiğin tamamını Temp'e .ps1 olarak indirip oradan yeniden başlatırız.
+# Her seferinde GÜNCEL olması için: ÖNCE eskisini sil -> SONRA indir -> BOM temizle -> yeniden başlat.
 
 $CalisanDosya = $PSCommandPath
 if ([string]::IsNullOrWhiteSpace($CalisanDosya)) { $CalisanDosya = $MyInvocation.MyCommand.Path }
@@ -19,7 +20,7 @@ if ([string]::IsNullOrWhiteSpace($CalisanDosya)) {
     $ScriptUrl  = "https://raw.githubusercontent.com/mhmtsk44/bilgisayar-araci/refs/heads/main/Bilgisayar_Araci.ps1"
     $HedefDosya = Join-Path $env:TEMP "Bilgisayar_Araci.ps1"
 
-    # ===== ÖNCE ESKİSİNİ SİL (her seferinde güncel sürüm için) =====
+    # ===== 1) ÖNCE ESKİSİNİ SİL (her seferinde güncel sürüm için) =====
     if (Test-Path $HedefDosya) {
         Write-Host "Eski surum bulundu, siliniyor..." -ForegroundColor Yellow
         Write-Host "  Silinen: $HedefDosya" -ForegroundColor DarkGray
@@ -29,11 +30,12 @@ if ([string]::IsNullOrWhiteSpace($CalisanDosya)) {
             Write-Host "UYARI: Eski dosya silinemedi (kilitli olabilir): $($_.Exception.Message)" -ForegroundColor DarkYellow
         }
     }
-    # ===== /ÖNCE ESKİSİNİ SİL =====
+    # ===== /1) ÖNCE ESKİSİNİ SİL =====
 
     Write-Host "Betik Temp klasorune indiriliyor..." -ForegroundColor Yellow
     Write-Host "  Hedef: $HedefDosya" -ForegroundColor DarkGray
 
+    # ===== 2) SONRA İNDİR =====
     $indi = $false
     try {
         $eskiPP = $ProgressPreference; $ProgressPreference = 'SilentlyContinue'
@@ -43,8 +45,22 @@ if ([string]::IsNullOrWhiteSpace($CalisanDosya)) {
     } catch {
         $indi = $false
     }
+    # ===== /2) SONRA İNDİR =====
 
     if ($indi) {
+        # ===== 3) BOM TEMİZLE (UTF-8 BOM, PowerShell 5.1'de hataya yol açıyor) =====
+        try {
+            $icerik = Get-Content -Path $HedefDosya -Raw -Encoding UTF8
+            # Baştaki BOM karakterini (U+FEFF) kaldır
+            $icerik = $icerik -replace "^\uFEFF", ""
+            # BOM'suz UTF-8 olarak yeniden yaz
+            $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
+            [System.IO.File]::WriteAllText($HedefDosya, $icerik, $utf8NoBom)
+        } catch {
+            Write-Host "UYARI: BOM temizlenemedi: $($_.Exception.Message)" -ForegroundColor DarkYellow
+        }
+        # ===== /3) BOM TEMİZLE =====
+
         Write-Host "Guncel surum indirildi. Temp'teki dosyadan yeniden baslatiliyor..." -ForegroundColor Green
         # -NoExit: hata olsa bile pencere kapanmasın; -File: yol boşluk içerse bile güvenli
         Start-Process powershell -ArgumentList @(
