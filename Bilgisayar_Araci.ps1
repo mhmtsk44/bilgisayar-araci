@@ -7,71 +7,69 @@
     NOT: Dosyayı "UTF-8 with BOM" olarak kaydedin (Türkçe + çerçeve karakterleri için).
 #>
 # ===================== IRM|IEX İLE ÇALIŞTIRILDIYSA KENDİNİ TEMP'E KAYDET =====================
-# Betik diskte bir dosya olarak DEĞİL de (irm|iex ile) bellekte çalıştırıldıysa,
-# $PSCommandPath ve $MyInvocation.MyCommand.Path BOŞ olur.
-# Bu durumda betiğin tamamını Temp'e .ps1 olarak indirip oradan yeniden başlatırız.
-# Her seferinde GÜNCEL olması için: ÖNCE eskisini sil -> SONRA indir -> BOM temizle -> yeniden başlat.
+# Denge: Karakterler bozulmasin diye UTF-8 (BOM'lu) YAZ,
+#        ama BOM hatasi olmasin diye -File DEGIL -Command ile BASLAT.
 
 $CalisanDosya = $PSCommandPath
 if ([string]::IsNullOrWhiteSpace($CalisanDosya)) { $CalisanDosya = $MyInvocation.MyCommand.Path }
 
 if ([string]::IsNullOrWhiteSpace($CalisanDosya)) {
-    # --- Betik DİSKTE DEĞİL (irm|iex modu) -> Temp'e kaydet ve oradan çalıştır ---
     $ScriptUrl  = "https://raw.githubusercontent.com/mhmtsk44/bilgisayar-araci/refs/heads/main/Bilgisayar_Araci.ps1"
     $HedefDosya = Join-Path $env:TEMP "Bilgisayar_Araci.ps1"
 
-    # ===== 1) ÖNCE ESKİSİNİ SİL (her seferinde güncel sürüm için) =====
+    # ===== 1) ÖNCE ESKİSİNİ SİL =====
     if (Test-Path $HedefDosya) {
-        Write-Host "Eski surum bulundu, siliniyor..." -ForegroundColor Yellow
-        Write-Host "  Silinen: $HedefDosya" -ForegroundColor DarkGray
-        try {
-            Remove-Item -Path $HedefDosya -Force -ErrorAction Stop
-        } catch {
-            Write-Host "UYARI: Eski dosya silinemedi (kilitli olabilir): $($_.Exception.Message)" -ForegroundColor DarkYellow
-        }
+        Write-Host "Eski surum siliniyor..." -ForegroundColor Yellow
+        try { Remove-Item -Path $HedefDosya -Force -ErrorAction Stop }
+        catch { Write-Host "UYARI: Eski dosya silinemedi: $($_.Exception.Message)" -ForegroundColor DarkYellow }
     }
-    # ===== /1) ÖNCE ESKİSİNİ SİL =====
 
-    Write-Host "Betik Temp klasorune indiriliyor..." -ForegroundColor Yellow
+    # ===== 2) SONRA İNDİR (ham baytlar -> UTF-8 metin) =====
+    Write-Host "Betik indiriliyor..." -ForegroundColor Yellow
     Write-Host "  Hedef: $HedefDosya" -ForegroundColor DarkGray
 
-    # ===== 2) SONRA İNDİR =====
     $indi = $false
     try {
         $eskiPP = $ProgressPreference; $ProgressPreference = 'SilentlyContinue'
-        Invoke-WebRequest -Uri $ScriptUrl -OutFile $HedefDosya -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop
+        $resp = Invoke-WebRequest -Uri $ScriptUrl -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop
         $ProgressPreference = $eskiPP
+
+        if ($resp.RawContentStream) {
+            $ms = New-Object System.IO.MemoryStream
+            $resp.RawContentStream.CopyTo($ms)
+            $bytes = $ms.ToArray()
+            $metin = [System.Text.Encoding]::UTF8.GetString($bytes)
+        } else {
+            $metin = [System.Text.Encoding]::UTF8.GetString([byte[]]$resp.Content)
+        }
+
+        # İçerikte kalmış olabilecek BOM karakterini metinden ayikla (dosya BOM'unu ayrica ekleyecegiz)
+        $metin = $metin -replace "^\uFEFF", ""
+
+        # ===== 3) UTF-8 (BOM'LU) OLARAK YAZ -> Turkce/kutu karakterleri dogru okunur =====
+        $utf8WithBom = New-Object System.Text.UTF8Encoding($true)
+        [System.IO.File]::WriteAllText($HedefDosya, $metin, $utf8WithBom)
+
         $indi = (Test-Path $HedefDosya) -and ((Get-Item $HedefDosya).Length -gt 0)
     } catch {
         $indi = $false
+        Write-Host "HATA (indirme/yazma): $($_.Exception.Message)" -ForegroundColor Red
     }
-    # ===== /2) SONRA İNDİR =====
 
     if ($indi) {
-        # ===== 3) BOM TEMİZLE (UTF-8 BOM, PowerShell 5.1'de hataya yol açıyor) =====
-        try {
-            $icerik = Get-Content -Path $HedefDosya -Raw -Encoding UTF8
-            # Baştaki BOM karakterini (U+FEFF) kaldır
-            $icerik = $icerik -replace "^\uFEFF", ""
-            # BOM'suz UTF-8 olarak yeniden yaz
-            $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
-            [System.IO.File]::WriteAllText($HedefDosya, $icerik, $utf8NoBom)
-        } catch {
-            Write-Host "UYARI: BOM temizlenemedi: $($_.Exception.Message)" -ForegroundColor DarkYellow
-        }
-        # ===== /3) BOM TEMİZLE =====
+        Write-Host "Guncel surum hazir. Yeniden baslatiliyor..." -ForegroundColor Green
 
-        Write-Host "Guncel surum indirildi. Temp'teki dosyadan yeniden baslatiliyor..." -ForegroundColor Green
-        # -NoExit: hata olsa bile pencere kapanmasın; -File: yol boşluk içerse bile güvenli
+        # KRITIK: -File KULLANMA (BOM'a takilir). -Command + '&' cagrisi BOM'u sorunsuz yutar.
+        $baslatKomut = "[Console]::OutputEncoding=[System.Text.Encoding]::UTF8; " +
+                       "`$OutputEncoding=[System.Text.Encoding]::UTF8; " +
+                       "& '$HedefDosya'"
         Start-Process powershell -ArgumentList @(
-            "-NoExit", "-ExecutionPolicy", "Bypass", "-File", "`"$HedefDosya`""
+            "-NoExit", "-ExecutionPolicy", "Bypass", "-Command", $baslatKomut
         )
-        # Bellekteki (irm|iex) kopya işini bitirdi; kapan.
         return
     } else {
-        Write-Host "HATA: Betik Temp'e indirilemedi. Internet baglantisini kontrol edin." -ForegroundColor Red
-        Write-Host "Yine de bellekten devam ediliyor..." -ForegroundColor DarkYellow
-        # İndirilemezse: eski davranış (bellekten devam) korunur.
+        Write-Host "HATA: Betik indirilemedi. Internet baglantisini kontrol edin." -ForegroundColor Red
+        Write-Host "Bellekten devam ediliyor..." -ForegroundColor DarkYellow
     }
 }
 # ===================== /TEMP'E KAYDET =====================
