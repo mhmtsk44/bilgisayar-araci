@@ -6,7 +6,59 @@
               powershell -ExecutionPolicy RemoteSigned -File "Bilgisayar_Araci.ps1"
     NOT: Dosyayı "UTF-8 with BOM" olarak kaydedin (Türkçe + çerçeve karakterleri için).
 #>
+# ===================== IRM|IEX İLE ÇALIŞTIRILDIYSA KENDİNİ TEMP'E KAYDET =====================
+# Betik diskte bir dosya olarak DEĞİL de (irm|iex ile) bellekte çalıştırıldıysa,
+# $PSCommandPath ve $MyInvocation.MyCommand.Path BOŞ olur.
+# Bu durumda betiğin tamamını Temp'e .ps1 olarak indirip oradan yeniden başlatırız.
 
+$CalisanDosya = $PSCommandPath
+if ([string]::IsNullOrWhiteSpace($CalisanDosya)) { $CalisanDosya = $MyInvocation.MyCommand.Path }
+
+if ([string]::IsNullOrWhiteSpace($CalisanDosya)) {
+    # --- Betik DİSKTE DEĞİL (irm|iex modu) -> Temp'e kaydet ve oradan çalıştır ---
+    $ScriptUrl  = "https://raw.githubusercontent.com/mhmtsk44/bilgisayar-araci/refs/heads/main/Bilgisayar_Araci.ps1"
+    $HedefDosya = Join-Path $env:TEMP "Bilgisayar_Araci.ps1"
+
+    # ===== ÖNCE ESKİSİNİ SİL (her seferinde güncel sürüm için) =====
+    if (Test-Path $HedefDosya) {
+        Write-Host "Eski surum bulundu, siliniyor..." -ForegroundColor Yellow
+        Write-Host "  Silinen: $HedefDosya" -ForegroundColor DarkGray
+        try {
+            Remove-Item -Path $HedefDosya -Force -ErrorAction Stop
+        } catch {
+            Write-Host "UYARI: Eski dosya silinemedi (kilitli olabilir): $($_.Exception.Message)" -ForegroundColor DarkYellow
+        }
+    }
+    # ===== /ÖNCE ESKİSİNİ SİL =====
+
+    Write-Host "Betik Temp klasorune indiriliyor..." -ForegroundColor Yellow
+    Write-Host "  Hedef: $HedefDosya" -ForegroundColor DarkGray
+
+    $indi = $false
+    try {
+        $eskiPP = $ProgressPreference; $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri $ScriptUrl -OutFile $HedefDosya -UseBasicParsing -TimeoutSec 60 -ErrorAction Stop
+        $ProgressPreference = $eskiPP
+        $indi = (Test-Path $HedefDosya) -and ((Get-Item $HedefDosya).Length -gt 0)
+    } catch {
+        $indi = $false
+    }
+
+    if ($indi) {
+        Write-Host "Guncel surum indirildi. Temp'teki dosyadan yeniden baslatiliyor..." -ForegroundColor Green
+        # -NoExit: hata olsa bile pencere kapanmasın; -File: yol boşluk içerse bile güvenli
+        Start-Process powershell -ArgumentList @(
+            "-NoExit", "-ExecutionPolicy", "Bypass", "-File", "`"$HedefDosya`""
+        )
+        # Bellekteki (irm|iex) kopya işini bitirdi; kapan.
+        return
+    } else {
+        Write-Host "HATA: Betik Temp'e indirilemedi. Internet baglantisini kontrol edin." -ForegroundColor Red
+        Write-Host "Yine de bellekten devam ediliyor..." -ForegroundColor DarkYellow
+        # İndirilemezse: eski davranış (bellekten devam) korunur.
+    }
+}
+# ===================== /TEMP'E KAYDET =====================
 # ===================== YÖNETİCİ KONTROLÜ + TEK PENCERE BAŞLATMA =====================
 
 function Test-Admin {
