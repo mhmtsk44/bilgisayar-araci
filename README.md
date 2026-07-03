@@ -101,16 +101,16 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ## 🧩 Kurulan Uygulama Listesi
 
-|# | Uygulama |# | Uygulama |
-|---|----------|---|----------|
-| 1 | Google Chrome | 9 | Visual Studio Code |
-| 2 | WinRAR | 10 | UniGetUI |
-| 3 | ACS Unified PC/SC Driver | 11 | PowerToys |
-| 4 | Adobe Reader | 12 | PowerShell 7 |
+|# | Uygulama |			# | Uygulama |
+|---|----------|		|---|----------|
+| 1 | Google Chrome 		| 9 | Visual Studio Code |
+| 2 | WinRAR		        | 10 | UniGetUI |
+| 3 | ACS Unified PC/SC Driver  | 11 | PowerToys |
+| 4 | Adobe Reader 		| 12 | PowerShell 7 |
 | 5 | Internet Download Manager | 13 | Oracle Java Runtime |
-| 6 | Mozilla Firefox | 14 | 7-Zip |
-| 7 | VLC Media Player | 15 | Windows Terminal |
-| 8 | Notepad++ | 16 | Microsoft.[NET] Runtime |
+| 6 | Mozilla Firefox 		| 14 | 7-Zip |
+| 7 | VLC Media Player 		| 15 | Windows Terminal |
+| 8 | Notepad++ 		| 16 | Microsoft.[NET] Runtime |
 
 > Tam liste script içindeki `$Uygulamalar` dizisinden yönetilir; kolayca ekleme/çıkarma yapabilirsiniz.
 
@@ -118,25 +118,25 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 ## 🗂️ Menü Düzeni (27 İşlem)
 
-|# | İşlem |# | İşlem |
-|---|-------|---|-------|
-| **📦 UYGULAMA** | | **🛠️ BAKIM** | |
-| 1 | Uygulama Kurulumu (liste) | 15 | Disk Kontrol ve Onarım (chkdsk) |
-| 2 | Tüm Uygulamaları Güncelle | 16 | Güvenli USB Oluştur (Korumalı) |
-| 3 | Uygulama Ara ve Kur | 17 | Windows Güncellemelerini Tara |
-| 4 | Uygulama Listesi Dışa/İçe Aktar | 18 | Ağ Ayarlarını Sıfırla |
-| 5 | Uygulama Kaldır | 19 | Geri Yükleme Noktası Oluştur |
-| **🧹 TEMİZLİK** | | 20 | Yazıcı Kuyruğunu Temizle |
-| 6 | Geçici Dosyaları Temizle | **📊 BİLGİ** | |
-| 7 | Windows Loglarını Temizle | 21 | Sistem Bilgileri |
-| 8 | Windows Update Önbelleği | 22 | Disk Özeti |
-| 9 | Geri Dönüşüm Kutusunu Boşalt | 23 | Disk Sağlığı (SMART) |
-| 10 | Disk Temizleme (cleanmgr) | 24 | Başlangıç Programları |
-| 11 | Ekran Kartı Sürücü Artıkları | 25 | Sistem Sağlık Özeti |
-| 12 | Sistem Dosyalarını Onar | **⚙️ DİĞER** | |
-| **💾 SÜRÜCÜ** | | 26 | Yönetim Klasörleri Oluştur |
-| 13 | Sürücü Yedekle | 27 | Yardım / Hakkında |
-| 14 | Sürücü Geri Yükle | **0** | **Çıkış** |
+|# | İşlem |				|# | İşlem |
+|---|-------|				|---|-------|
+| **📦 UYGULAMA** | 			| **🛠️ BAKIM** | |
+| 1 | Uygulama Kurulumu (liste) 	| 15 | Disk Kontrol ve Onarım (chkdsk) |
+| 2 | Tüm Uygulamaları Güncelle 	| 16 | Güvenli USB Oluştur (Korumalı) |
+| 3 | Uygulama Ara ve Kur	 	| 17 | Windows Güncellemelerini Tara |
+| 4 | Uygulama Listesi Dışa/İçe Aktar 	| 18 | Ağ Ayarlarını Sıfırla |
+| 5 | Uygulama Kaldır 			| 19 | Geri Yükleme Noktası Oluştur |
+| **🧹 TEMİZLİK** | 			| 20 | Yazıcı Kuyruğunu Temizle |
+| 6 | Geçici Dosyaları Temizle |  	|**📊 BİLGİ** |
+| 7 | Windows Loglarını Temizle 	| 21 | Sistem Bilgileri |
+| 8 | Windows Update Önbelleği 		| 22 | Disk Özeti |
+| 9 | Geri Dönüşüm Kutusunu Boşalt 	| 23 | Disk Sağlığı (SMART) |
+| 10 | Disk Temizleme (cleanmgr) 	| 24 | Başlangıç Programları |
+| 11 | Ekran Kartı Sürücü Artıkları	| 25 | Sistem Sağlık Özeti |
+| 12 | Sistem Dosyalarını Onar 		| **⚙️ DİĞER** | |
+| **💾 SÜRÜCÜ** | 			| 26 | Yönetim Klasörleri Oluştur |
+| 13 | Sürücü Yedekle 			| 27 | Yardım / Hakkında |
+| 14 | Sürücü Geri Yükle | 		|**0** | **Çıkış** |
 
 ---
 
