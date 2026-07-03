@@ -95,7 +95,7 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 | **İşletim Sistemi** | Windows 10 (1809+) / Windows 11 |
 | **PowerShell** | 5.1+ (Windows'ta yerleşik) |
 | **Yetki** | Yönetici (script otomatik yükseltir) |
-| **Winget** | Yoksa script otomatik kurmayı dener (LTSC uyumlu) |
+| **Winget** | Yoksa script otomatik kurmayı dener (LTSC uyumlu); yine de kurulamazsa araç winget gerektirmeyen özelliklerle (temizlik, bilgi, bakım vb.) çalışmaya devam eder |
 | **İnternet** | Uygulama kurulumu/güncelleme için gerekli |
 
 ---
@@ -121,45 +121,53 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 | 3 | ACS Unified PC/SC Driver | 11 | PowerToys |
 | 4 | Adobe Reader | 12 | PowerShell 7 |
 | 5 | Internet Download Manager | 13 | Oracle Java Runtime |
-| 6 | Mozilla Firefox | 14 | 7-Zip |
+| 6 | Mozilla Firefox | 14 | Microsoft PC Manager *(Store)* |
 | 7 | VLC Media Player | 15 | Windows Terminal |
-| 8 | Notepad++ | 16 | Microsoft .NET Runtime |
+| 8 | Notepad++ | 16 | Alpemix *(Uzak Bağlantı)* |
 
 > Tam liste script içindeki `$Uygulamalar` dizisinden yönetilir; kolayca ekleme/çıkarma yapabilirsiniz.
+>
+> **Notlar:**
+> - **Microsoft PC Manager** winget yerine `msstore` kaynağından kurulur.
+> - **Alpemix**, winget'te bulunmadığı için doğrudan `alpemix.com` üzerinden masaüstüne indirilir; kurulum öncesi dosyanın **dijital imzası** otomatik olarak doğrulanır ve imza geçersizse kullanıcı uyarılır.
 
 ---
 
 ## 🗂️ Menü Düzeni (27 İşlem)
 
-### 📦 Uygulama
+### 📦 Uygulama Yönetimi
+
 | # | İşlem |
-|---|---|
-| 1 | Uygulama Kurulumu (liste) |
-| 2 | Tüm Uygulamaları Güncelle |
-| 3 | Uygulama Ara ve Kur |
-| 4 | Uygulama Listesi Dışa/İçe Aktar |
-| 5 | Uygulama Kaldır |
+|:-:|---|
+| 01 | Uygulama Kurulumu (liste) |
+| 02 | Tüm Uygulamaları Güncelle |
+| 03 | Uygulama Ara ve Kur |
+| 04 | Uygulama Listesi Dışa/İçe Aktar |
+| 05 | Uygulama Kaldır |
 
 ### 🧹 Temizlik
+
 | # | İşlem |
-|---|---|
-| 6 | Geçici Dosyaları Temizle |
-| 7 | Windows Loglarını Temizle |
-| 8 | Windows Update Önbelleği |
-| 9 | Geri Dönüşüm Kutusunu Boşalt |
+|:-:|---|
+| 06 | Geçici Dosyaları Temizle |
+| 07 | Windows Loglarını Temizle |
+| 08 | Windows Update Önbelleği |
+| 09 | Geri Dönüşüm Kutusunu Boşalt |
 | 10 | Disk Temizleme (cleanmgr) |
 | 11 | Ekran Kartı Sürücü Artıkları |
-| 12 | Sistem Dosyalarını Onar |
+| 12 | Sistem Dosyalarını Onar (SFC/DISM) |
 
-### 💾 Sürücü
+### 💾 Sürücü İşlemleri
+
 | # | İşlem |
-|---|---|
+|:-:|---|
 | 13 | Sürücü Yedekle |
 | 14 | Sürücü Geri Yükle |
 
 ### 🛠️ Bakım
+
 | # | İşlem |
-|---|---|
+|:-:|---|
 | 15 | Disk Kontrol ve Onarım (chkdsk) |
 | 16 | Güvenli USB Oluştur (Korumalı) |
 | 17 | Windows Güncellemelerini Tara |
@@ -167,9 +175,10 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 | 19 | Geri Yükleme Noktası Oluştur |
 | 20 | Yazıcı Kuyruğunu Temizle |
 
-### 📊 Bilgi
+### 📊 Bilgi & Tanılama
+
 | # | İşlem |
-|---|---|
+|:-:|---|
 | 21 | Sistem Bilgileri |
 | 22 | Disk Özeti |
 | 23 | Disk Sağlığı (SMART) |
@@ -177,11 +186,12 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 | 25 | Sistem Sağlık Özeti |
 
 ### ⚙️ Diğer
+
 | # | İşlem |
-|---|---|
+|:-:|---|
 | 26 | Yönetim Klasörleri Oluştur |
 | 27 | Yardım / Hakkında |
-| 0 | Çıkış |
+| 00 | Çıkış |
 
 ---
 
