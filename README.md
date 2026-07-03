@@ -1,12 +1,9 @@
-Tabii Mehmet! README dosyasını **tek bir kod bloğu** olarak veriyorum — kopyalayıp doğrudan `README.md` dosyasına yapıştırabilirsin. Böyle kullanım için markdown'ı ham (raw) haliyle sunuyorum:
-
-```
 # 🖥️ Bilgisayar Aracı
 
 > **Windows için hepsi-bir-arada sistem bakım aracı**
 > Uygulama kurulumu • Güncelleme • Sürücü yedekleme • Temizlik • Bakım — tek PowerShell script'inde.
 
-**Hazırlayan:** Mehmet IŞIK · **Güncelleme:** 03.07.2026
+**Hazırlayan:** Mehmet IŞIK · **Güncelleme:** 04.07.2026
 
 ---
 
@@ -153,7 +150,7 @@ Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 ## 👤 Hazırlayan
 
 **Mehmet IŞIK**
-Güncelleme: 3,070,2026
+Güncelleme: 04.07.2026
 
 ---
 
@@ -161,14 +158,3 @@ Güncelleme: 3,070,2026
 
 Kişisel kullanım içindir. Serbestçe dağıtılabilir; sorumluluk kullanıcıya aittir.
 ````
-
----
-
-Evet, **böyle olur** ✅ — yukarıdaki kutunun sağ üst köşesindeki kopyala düğmesine basıp, boş bir `README.md` dosyasına yapıştırman yeterli.
-
-**Küçük hatırlatmalar:**
-- 💾 Dosyayı **UTF-8** olarak kaydet ki Türkçe karakterler (ş; ğ; İ) ve ikonlar (🖥️ 📦 🧹) bozulmasın.
-- 📁 Dosya adı tam olarak`README.md` olmalı ki GitHub otomatik göstersin.
-- ⚠️ Uygulama listesindeki **14–16. sıralar** (7-Zip; Windows Terminal; .NET Runtime) senin script'inin kesilen kısmından tahminimdir. Gerçek `$Uygulamalar` dizisindeki son satırlar farklıysa söyle, birebir düzelteyim.
-
-Başka eklemek/çıkarmak istediğin bir bölüm var mı?
