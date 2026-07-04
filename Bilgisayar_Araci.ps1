@@ -501,8 +501,8 @@ if ($Host.Name -eq 'ConsoleHost') {
     try {
         $raw = $Host.UI.RawUI
         $max = $raw.MaxPhysicalWindowSize
-        $genislik = [math]::Min(110, $max.Width)
-        $yukseklik = [math]::Min(45, $max.Height)
+        $genislik = [math]::Min(120, $max.Width)
+        $yukseklik = [math]::Min(46, $max.Height)
         $raw.BufferSize = New-Object Management.Automation.Host.Size($genislik, 3000)
         $raw.WindowSize = New-Object Management.Automation.Host.Size($genislik, $yukseklik)
     } catch {}
