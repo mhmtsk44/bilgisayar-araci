@@ -22,7 +22,7 @@ irm https://tinyurl.com/27kxfp7y | iex
 ### Yöntem 2 — Yerel Dosya (örn. Masaüstü)
 
 1. Projeyi **zip olarak indirin** ve Masaüstüne çıkarın (klasör adı: `bilgisayar-araci-main`).
-2. Bir PowerShell penceresinde şu komutu çalıştırın (Türkçe karakter/çerçeve simgelerinin bozuk görünmemesi için **gereklidir**, aşağıdaki [UTF-8 (BOM) Dönüştürme](#-utf-8-bom-dönüştürme-masaüstünde-doğru-çalışması-için) bölümüne bakın):
+2. Bir PowerShell penceresinde şu komutu çalıştırın (Türkçe karakter/çerçeve simgelerinin bozuk görünmemesi için **gereklidir**.
    ```powershell
    $p = "$env:USERPROFILE\Desktop\bilgisayar-araci-main\Bilgisayar_Araci.ps1"; [IO.File]::WriteAllText($p, (Get-Content $p -Raw -Encoding UTF8), [Text.UTF8Encoding]::new($true))
    ```
@@ -30,16 +30,6 @@ irm https://tinyurl.com/27kxfp7y | iex
 4. Script kendini otomatik olarak **yönetici** yetkisiyle ve **Windows Terminal**'de (varsa) yeniden başlatır; sonsuz döngüye girmemesi için ortam değişkeni bayrağı kullanır.
 
 > ⚠️ **2. adımı atlamayın:** Windows PowerShell 5.1, BOM içermeyen `.ps1` dosyalarını UTF-8 yerine sistem kod sayfasına göre okur; bu yüzden Türkçe karakterler ve çerçeve simgeleri (╔ ║ ✦ vb.) bu adım atlanırsa bozuk görünür.
-
----
-
-## 🔡 UTF-8 (BOM) Dönüştürme — Masaüstünde Doğru Çalışması İçin
-
-`irm | iex` (Yöntem 1) ile çalıştırırken bu sorun yaşanmaz; yalnızca **yerel dosyayı** çalıştırırken geçerlidir (bkz. yukarıdaki Yöntem 2, adım 2). Farklı bir klasöre indirdiyseniz, aynı komuttaki `$p` yolunu kendi dosya konumunuza göre güncelleyin:
-
-```powershell
-$p = "C:\yol\Bilgisayar_Araci.ps1"; [IO.File]::WriteAllText($p, (Get-Content $p -Raw -Encoding UTF8), [Text.UTF8Encoding]::new($true))
-```
 
 ---
 
