@@ -115,7 +115,6 @@ Script çalıştırıldığında sırasıyla şu adımları izler:
 | **Yetki** | Yönetici (script otomatik yükseltir) |
 | **Winget** | Yoksa script otomatik kurmayı dener (LTSC uyumlu); yine de kurulamazsa araç winget gerektirmeyen özelliklerle (temizlik, bilgi, bakım vb.) çalışmaya devam eder |
 | **İnternet** | Uygulama kurulumu/güncelleme için gerekli |
-| **Dosya Kodlaması** | Yerelde çalıştırılacaksa **UTF-8 (BOM)** — bkz.
 
 ---
 
