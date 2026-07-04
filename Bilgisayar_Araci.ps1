@@ -339,7 +339,15 @@ function Install-Winget {
         if (Test-LTSC) { Kur-WingetLTSCGuncellemeGorevi }
         return $true
     }
-
+Write-Host ""
+    Write-Host "  Sistemde Winget (Windows Paket Yöneticisi) bulunamadı." -ForegroundColor Yellow
+    Write-Host "  Uygulama indirme ve güncelleme menülerinin çalışması için gereklidir." -ForegroundColor DarkGray
+    if (-not (Confirm-Islem "Winget şimdi kurulsun mu?")) {
+        Write-Host "  Winget kurulumu atlandı. Winget gerektiren menüler çalışmayacaktır." -ForegroundColor Red
+        Yaz-Log "Winget kurulumu kullanıcı tarafından iptal edildi." 'UYARI'
+        Start-Sleep -Seconds 2
+        return $false
+    }
     Write-Host "Sistem mimarisi inceleniyor..." -ForegroundColor Cyan
     $ltsc = Test-LTSC
 
