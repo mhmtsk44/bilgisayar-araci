@@ -528,9 +528,15 @@ function Show-Divider{ Write-Host ("╟" + ("─" * $BoxWidth) + "╢") -Foregro
 function Show-Bos    { Write-Host ("║" + (" " * $BoxWidth) + "║") -ForegroundColor $Tema.Cerceve }
 function Show-Line {
     param([string]$Metin, [string]$Renk = $Tema.Metin)
+    
+    # ✨ emojisi 1 karakter görünür ama ekranda 2 birim yer kaplar. 
+    # Hesabı düzeltmek için '✨' yerine geçici olarak iki nokta '..' saydırıyoruz.
+    $sanalUzunluk = ($Metin -replace '✨', '..').Length
+
     $temiz = $Metin
-    if ($temiz.Length -gt $BoxWidth) { $temiz = $temiz.Substring(0, $BoxWidth) }
-    $bosluk = [math]::Max(1, $BoxWidth - $temiz.Length)
+    if ($sanalUzunluk -gt $BoxWidth) { $temiz = $temiz.Substring(0, $BoxWidth) }
+    $bosluk = [math]::Max(1, $BoxWidth - $sanalUzunluk)
+    
     Write-Host "║" -ForegroundColor $Tema.Cerceve -NoNewline
     Write-Host (" " + $temiz + (" " * ($bosluk - 1))) -ForegroundColor $Renk -NoNewline
     Write-Host "║" -ForegroundColor $Tema.Cerceve
