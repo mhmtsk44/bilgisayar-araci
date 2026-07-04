@@ -969,7 +969,7 @@ function Show-SystemInfo {
         $cpu = Get-CimInstance Win32_Processor | Select-Object -First 1
         
         # DOĞRU RAM HESABI (Hem fiziksel hem sanal makine uyumlu)
-        $ram = [math]::Round($os.TotalVisibleMemorySize / 1024 / 1024
+        $ram = [math]::Round($os.TotalVisibleMemorySize / 1024 / 1024)
 
         Write-Host ("  Bilgisayar : " + $cs.Name)          -ForegroundColor $Tema.Baslik
         Write-Host ("  İşletim S. : " + $os.Caption)       -ForegroundColor $Tema.Baslik
