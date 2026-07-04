@@ -92,7 +92,7 @@ Script çalıştırıldığında sırasıyla şu adımları izler:
 - Yedekten sürücüleri **geri yükleme**
 
 ### 🛠️ Bakım
-- **Sistem ve disk onarımı**: SFC, DISM ve chkdsk tek menüde; ilerleme çubuklu "Tam Sistem Onarımı" (DISM + SFC birlikte) seçeneği
+- **Sistem ve disk onarımı**: SFC, DISM ve chkdsk tek menüde; "Tam Sistem Onarımı" (DISM + SFC birlikte) seçeneği
 - **Güvenli / korumalı USB** oluşturma
 - Windows güncellemelerini tarama; ağ ayarlarını sıfırlama
 - Sistem geri yükleme noktası; yazıcı kuyruğu temizliği
@@ -115,7 +115,7 @@ Script çalıştırıldığında sırasıyla şu adımları izler:
 | **Yetki** | Yönetici (script otomatik yükseltir) |
 | **Winget** | Yoksa script otomatik kurmayı dener (LTSC uyumlu); yine de kurulamazsa araç winget gerektirmeyen özelliklerle (temizlik, bilgi, bakım vb.) çalışmaya devam eder |
 | **İnternet** | Uygulama kurulumu/güncelleme için gerekli |
-| **Dosya Kodlaması** | Yerelde çalıştırılacaksa **UTF-8 (BOM)** — bkz. yukarıdaki "UTF-8 (BOM) Dönüştürme" bölümü (tek satır komutla düzeltilir) |
+| **Dosya Kodlaması** | Yerelde çalıştırılacaksa **UTF-8 (BOM)** — bkz.
 
 ---
 
