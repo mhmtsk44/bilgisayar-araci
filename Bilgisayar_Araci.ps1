@@ -438,6 +438,7 @@ if (-not (Test-Admin)) {
         Write-Host ""
         Read-Host "Kapatmak için Enter'a basın"
     }
+    Start-Sleep -Seconds 1
     exit
 }
 
