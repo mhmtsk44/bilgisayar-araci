@@ -2299,7 +2299,7 @@ function Invoke-AppMenu {
 }
 # ===================== TEK DÜZ MENÜ (FLAT) =====================
 $Menu = @(
-    # ===== SOL SÜTUN (1–14) =====
+    # ===== SOL SÜTUN (1–13) =====
     @{ No = 1;  Grup = "UYGULAMA";  Ad = "Uygulama Kurulumu (liste)";          Eylem = { Invoke-AppMenu } }
     @{ No = 2;  Grup = "UYGULAMA";  Ad = "Tüm Uygulamaları Güncelle";          Eylem = { Update-AllApps } }
     @{ No = 3;  Grup = "UYGULAMA";  Ad = "Uygulama Ara ve Kur (winget)";       Eylem = { Search-App } }
@@ -2316,7 +2316,7 @@ $Menu = @(
     @{ No = 12; Grup = "SÜRÜCÜ";    Ad = "Sürücü Yedekle";                     Eylem = { Backup-Drivers } }
     @{ No = 13; Grup = "SÜRÜCÜ";    Ad = "Sürücü Geri Yükle";                  Eylem = { Restore-Drivers } }
 
-    # ===== SAĞ SÜTUN (15–27) =====
+    # ===== SAĞ SÜTUN (14–26) =====
     @{ No = 14; Grup = "BAKIM";     Ad = "Sistem ve Disk Onarımı";   	       Eylem = { Repair-Disk } }
     @{ No = 15; Grup = "BAKIM";     Ad = "Güvenli USB Oluştur (Korumalı)";     Eylem = { Protect-USB } }
     @{ No = 16; Grup = "BAKIM";     Ad = "Windows Güncellemelerini Tara";      Eylem = { Start-WindowsUpdate } }
