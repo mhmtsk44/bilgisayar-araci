@@ -2790,7 +2790,7 @@ $Menu = @(
 
     # ===== SAĞ SÜTUN (14–27) =====
     @{ No = 14; Grup = "BAKIM";     Ad = "Sistem ve Disk Onarımı";   	       Eylem = { Repair-Disk } }
-    @{ No = 15; Grup = "BAKIM";     Ad = "Disk Temizle ve Dönüştür (GPT/MBR)"; Eylem = { Reset-DiskTablosu } }
+    @{ No = 15; Grup = "BAKIM";     Ad = "Disk Temizle ve Dönüştür-GPT/MBR";   Eylem = { Reset-DiskTablosu } }
     @{ No = 16; Grup = "BAKIM";     Ad = "Güvenli USB Oluştur (Korumalı)";     Eylem = { Protect-USB } }
     @{ No = 17; Grup = "BAKIM";     Ad = "Windows Güncellemelerini Tara";      Eylem = { Start-WindowsUpdate } }
     @{ No = 18; Grup = "BAKIM";     Ad = "Ağ Ayarlarını Sıfırla";              Eylem = { Reset-Network } }
