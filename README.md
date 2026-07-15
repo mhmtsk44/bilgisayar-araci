@@ -94,7 +94,7 @@ Sonsuz döngüye girmemesi için `BILGISAYAR_ARACI_WT` ortam değişkeni bayrak 
 
 ---
 
-## ✨ Öne Çıkan Mühendislik Detayları
+## ✨ Öne Çıkan Detaylar
 
 | | |
 |---|---|
