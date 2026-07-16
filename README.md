@@ -221,7 +221,7 @@ Yerel dosyayı UTF-8 BOM'a çevirmeyi atlamış olabilirsiniz (bkz. Kurulum, Yö
 
 | Tarih | Not |
 |---|---|
-| **15.07.2026** | Kararlılık ve kod kalitesi iyileştirmeleri |
+| **17.07.2026** | Kararlılık ve kod kalitesi iyileştirmeleri |
 | **07.07.2026** | Belgelenen ilk sürüm |
 
 ---
