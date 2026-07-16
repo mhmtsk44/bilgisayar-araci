@@ -1,7 +1,7 @@
 <#
     Uygulama İndirme-Güncelleme-Sürücü Yedek Alma-Temizleme Aracı
     Hazırlayan: Mehmet IŞIK
-    Güncelleme: 15.07.2026
+    Güncelleme: 17.07.2026
     Kullanım: Sağ tık -> "PowerShell ile çalıştır" veya yönetici PowerShell'de:
               powershell -ExecutionPolicy RemoteSigned -File "Bilgisayar_Araci.ps1"
     NOT: Dosyayı "UTF-8 with BOM" olarak kaydedin (Türkçe + çerçeve karakterleri için).
@@ -3090,7 +3090,7 @@ function Show-Help {
     Show-Header "YARDIM / HAKKINDA"
     Write-Host "  Bilgisayar Aracı" -ForegroundColor $Tema.Vurgu
     Write-Host "  Hazırlayan : Mehmet IŞIK" -ForegroundColor $Tema.Metin
-    Write-Host "  Güncelleme : 15.07.2026" -ForegroundColor $Tema.Metin
+    Write-Host "  Güncelleme : 17.07.2026" -ForegroundColor $Tema.Metin
     Write-Host ""
     Write-Host "  Bu araç; uygulama kurulumu, sistem bilgisi," -ForegroundColor $Tema.Metin
     Write-Host "  bakım/temizlik ve sürücü yönetimi sağlar." -ForegroundColor $Tema.Metin
